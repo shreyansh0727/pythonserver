@@ -1,83 +1,179 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>File Upload and Download</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     <style>
         body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
         }
+        
         .container {
-            margin-top: 50px;
+            width: 80%;
+            
+            margin: 0 auto;
+            text-align: center;
         }
-        h1 {
-            margin-bottom: 30px;
+        .upload-section {
+            position: absolute;
+            top: 0;
+            height: 30%;
+            width: 100%;
+            text-align: center;
+            background-color: #121212;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+           
         }
-        .btn-custom {
-            border: 2px solid #007bff;
-            color: white;
-            background-color: #007bff;
+        .upload-section h1 {
+            margin: 0;
+        }
+        h2 {
+            color: #bb86fc;
+            margin: 10px 0;
+            text-align: center;
+        }
+        form {
+            margin: 20px 0;
+        }
+        input[type="file"] {
+            background-color: #333333;
+            color: #ffffff;
+            border: 1px solid #444444;
+            border-radius: 5px;
+            padding: 10px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #bb86fc;
+            color: #121212;
+            border: none;
+            border-radius: 5px;
             padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 20px;
-            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        .btn-custom:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-            transition: all 0.3s ease;
+        button:hover {
+            background-color: #3700b3;
         }
-        .file-list {
-            margin-top: 30px;
+        .download-section {
+            height: 25%;
+            width: 90%;
         }
-        .file-list a {
+        .files-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            list-style-type: none;
+            padding: 0;
+        }
+        .files-grid li {
+            background-color: #333333;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            width: calc(100% / 3 - 20px); /* Three columns */
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+        }
+        @media (max-width: 600px) {
+            .files-grid li {
+                width: calc(100% / 2 - 20px); /* Two columns for smaller screens */
+            }
+        }
+        @media (max-width: 400px) {
+            .files-grid li {
+                width: 100%; /* One column for very small screens */
+            }
+        }
+        .files-grid li:hover {
+            transform: scale(1.05);
+        }
+        a {
+            color: #bb86fc;
             text-decoration: none;
-            color: #007bff;
+            transition: color 0.3s ease;
         }
-        .file-list a:hover {
-            text-decoration: underline;
+        a:hover {
+            color: #3700b3;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .view-all-btn {
+            margin-top: 20px;
+            margin-left: 45%;
+            background-color: #333333;
+            color: #ffffff;
+            border: 1px solid #444444;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .view-all-btn:hover {
+            background-color: #3700b3;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">File Upload</h1>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <form method="post" enctype="multipart/form-data" action="/upload">
-                    <div class="form-group">
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="file" name="file" required>
-                            <label class="custom-file-label" for="file">Choose file</label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-custom">Upload</button>
-                </form>
-            </div>
+     
+        <div class="upload-section">
+            <h1>Upload and Download files</h1>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file" name="files[]" multiple>
+             <br />
+            <button type="submit" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Upload</button>
+            </form>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-md-8 file-list">
-                <h2>Files</h2>
-                <ul class="list-group">
-                    {% for file in files %}
-                    <li class="list-group-item"><a href="{{ url_for('download_file', filename=file) }}">{{ file }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
+      
+        <div class="download-section">
+            <h2>Uploaded Files</h2>
+            <ul class="files-grid" id="files-list">
+                {% for file in files %}
+                <li class="{% if loop.index > 10 %}hidden{% endif %}"><a href="{{ url_for('download_file', filename=file) }}">{{ file }}</a></li>
+                {% endfor %}
+            </ul>
+            {% if files|length > 10 %}
+            <button class="view-all-btn" id="view-all-btn">View All Files</button>
+            {% endif %}
         </div>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function(){
-            bsCustomFileInput.init();
+        document.addEventListener("DOMContentLoaded", function() {
+            var viewAllBtn = document.getElementById("view-all-btn");
+            var hiddenItems = document.querySelectorAll(".hidden");
+
+            if (viewAllBtn) {
+                viewAllBtn.addEventListener("click", function() {
+                    hiddenItems.forEach(function(item) {
+                        item.classList.remove("hidden");
+                    });
+                    viewAllBtn.style.display = "none";
+                });
+            }
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </body>
 </html>
